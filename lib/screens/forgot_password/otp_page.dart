@@ -1,11 +1,15 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:provider/provider.dart';
+
+import 'package:braucoe/data/apis/mail_api.dart';
+import 'package:braucoe/utilities/generate_otp.dart';
 import 'package:braucoe/screens/forgot_password/reset_password_page.dart';
-import '../../data/apis/login_api.dart';
-import '../../data/apis/otp_api.dart';
+import '../../providers/student_data_provider.dart';
 
 class OtpPage extends StatefulWidget {
-
   static const String routeName = '/otp-page';
 
   int reg_no;
@@ -19,20 +23,41 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPage extends State<OtpPage> {
+
+  late MailAPI mailAPI;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.reg_no);
-    LoginAPI loginApi = LoginAPI();
-    OtpAPI otpAPI = OtpAPI();
-    loginApi.getStudent(widget.reg_no).then((value) => {
-          print(value),
-          otpAPI.getOTP(LoginAPI.studentDetails?.mobile_no).then((value) {
-            print(value);
-            widget.generatedOtp = value;
-          }),
-        });
+    mailAPI = MailAPI();
+    mailAPI.sendMail(
+        studentId: Provider.of<StudentData>(context, listen: false)
+            .studentDetails!
+            .studentId,
+        subject: generateSubject(),
+        body: generateBody(),
+        recieverMail: Provider.of<StudentData>(context, listen: false)
+            .studentDetails!
+            .emailId);
+  }
+
+  String generateSubject() {
+    return 'Reset Password OTP - Action Required';
+  }
+
+  String generateBody() {
+    widget.generatedOtp = generateOTP();
+    return '''Dear ${Provider.of<StudentData>(context, listen: false).studentDetails?.student_name ?? 'User'},
+
+We have received a request to reset the password for your account. To proceed with the password reset process, please use the following One-Time Password (OTP): ${widget.generatedOtp}.
+
+Please note that this OTP is valid for a limited time and should not be shared with anyone. If you did not request a password reset, please ignore this email.
+
+If you have any further questions or need assistance, please do not hesitate to contact our support team at phanireddy7989@gmail.com.
+
+Best regards,
+BRAUCOE SUPPORT.''';
   }
 
   @override
@@ -53,11 +78,9 @@ class _OtpPage extends State<OtpPage> {
                   color: Color(0xFF382E1E),
                 ),
               ),
-
               const SizedBox(
                 height: 15,
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -70,11 +93,9 @@ class _OtpPage extends State<OtpPage> {
                   )
                 ],
               ),
-
               const SizedBox(
                 height: 25,
               ),
-
               Container(
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
@@ -90,11 +111,9 @@ class _OtpPage extends State<OtpPage> {
                         color: Color(0XFF382E1E),
                       ),
                     ),
-
                     const SizedBox(
                       height: 5,
                     ),
-
                     const Text(
                       'Enter the 4-digit confirmation code we sent',
                       style: TextStyle(
@@ -105,7 +124,6 @@ class _OtpPage extends State<OtpPage> {
                         fontSize: 17,
                       ),
                     ),
-
                     const Text(
                       'you below.',
                       style: TextStyle(
@@ -116,11 +134,9 @@ class _OtpPage extends State<OtpPage> {
                         fontSize: 17,
                       ),
                     ),
-
                     const SizedBox(
                       height: 40,
                     ),
-
                     Container(
                       margin: EdgeInsets.only(left: 30, right: 30),
                       child: Column(
@@ -149,11 +165,9 @@ class _OtpPage extends State<OtpPage> {
                               },
                             ),
                           ),
-
                           const SizedBox(
                             height: 50,
                           ),
-
                           Container(
                             height: 55,
                             width: double.infinity,
@@ -179,11 +193,10 @@ class _OtpPage extends State<OtpPage> {
                                 backgroundColor: const Color(0XFF00512D),
                               ),
                               onPressed: () {
-                                print(widget.userOtp.runtimeType);
-                                print(widget.generatedOtp.runtimeType);
                                 if (widget.userOtp == widget.generatedOtp &&
                                     widget.userOtp != null) {
-                                  Navigator.pushReplacementNamed(context, ResetPassword.routeName);
+                                  Navigator.pushReplacementNamed(
+                                      context, ResetPassword.routeName);
                                 } else {
                                   final snackBar = SnackBar(
                                     content: Text("Incorrect OTP"),
@@ -206,11 +219,9 @@ class _OtpPage extends State<OtpPage> {
                               ),
                             ),
                           ),
-
                           const SizedBox(
                             height: 20,
                           ),
-
                           InkWell(
                             child: const Text(
                               "Resend Code",
@@ -222,20 +233,15 @@ class _OtpPage extends State<OtpPage> {
                               ),
                             ),
                             onTap: () {
-                              LoginAPI loginApi = LoginAPI();
-                              OtpAPI otpAPI = OtpAPI();
-                              loginApi
-                                  .getStudent(widget.reg_no)
-                                  .then((value) => {
-                                print(value),
-                                otpAPI
-                                    .getOTP(
-                                    LoginAPI.studentDetails?.mobile_no)
-                                    .then((value) {
-                                  print(value);
-                                  widget.generatedOtp = value;
-                                }),
-                              });
+                              mailAPI.sendMail(
+                                  studentId: Provider.of<StudentData>(context, listen: false)
+                                      .studentDetails!
+                                      .studentId,
+                                  subject: generateSubject(),
+                                  body: generateBody(),
+                                  recieverMail: Provider.of<StudentData>(context, listen: false)
+                                      .studentDetails!
+                                      .emailId);
                             },
                           ),
                         ],

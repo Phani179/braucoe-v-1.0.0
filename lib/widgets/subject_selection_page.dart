@@ -1,15 +1,15 @@
+
 import 'dart:io';
 
-import 'package:braucoe/widgets/pdf_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:path_provider/path_provider.dart';
+
+import 'package:braucoe/widgets/pdf_view.dart';
 import 'package:braucoe/widgets/subject_check_box.dart';
 import 'package:braucoe/services/firebase_storage_services.dart';
 import 'package:braucoe/utilities/file_handling.dart';
 import 'package:braucoe/utilities/semester.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 
 class SubjectSelectionScreen extends StatefulWidget {
   SubjectSelectionScreen({

@@ -1,28 +1,27 @@
-import 'dart:convert';
+
+import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:braucoe/providers/profile_image_notifier.dart';
-import 'package:flutter/material.dart';
-import 'package:braucoe/widgets/profile_image_item.dart';
 
-import '../data/apis/login_api.dart';
+import 'package:braucoe/providers/profile_image_notifier.dart';
+import 'package:braucoe/widgets/profile_image_item.dart';
 
 class ProfileImageGenerator extends StatelessWidget {
   ProfileImageGenerator({required this.radius, super.key});
+
   double radius;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileImageNotifier>(
-        builder: (ctx, profileImageNotifier, child)
-            {
-              return profileImageNotifier.imageFile != null
-                  ? ProfileImageItem(image:  FileImage(profileImageNotifier.imageFile!), radius: radius,profileImageNotifier: profileImageNotifier,)
-                  : LoginAPI.personalInfo?.passportSizePhoto != null
-                  ? ProfileImageItem(profileImageNotifier: profileImageNotifier, radius: radius,image: MemoryImage(
-                  base64Decode(LoginAPI.personalInfo?.passportSizePhoto)))
-                  : ProfileImageItem(profileImageNotifier: profileImageNotifier, radius: radius,image: AssetImage("assets/images/ProfileImage.png"));
-            }
-    );
-
+        builder: (ctx, profileImageNotifier, child) {
+      return ProfileImageItem(
+        profileImageNotifier: profileImageNotifier,
+        radius: radius,
+        image: MemoryImage(
+          profileImageNotifier.imageFile!.readAsBytesSync(),
+        ),
+      );
+    });
   }
 }

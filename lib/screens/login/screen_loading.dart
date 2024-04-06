@@ -1,14 +1,16 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:braucoe/data/apis/login_api.dart';
 import 'package:braucoe/data/apis/renew_password_api.dart';
 import 'package:braucoe/screens/login/student_login.dart';
 import 'package:braucoe/utilities/images.dart';
 import 'package:braucoe/widgets/shimmer_effect/login_shimmer.dart';
 import 'package:braucoe/screens/bottom_nav_bar.dart';
-
+import '../../providers/student_data_provider.dart';
 import '../../utilities/firebase_functions.dart';
 import 'handler.dart';
 
@@ -64,22 +66,24 @@ class _ScreenLoadingState extends State<ScreenLoading> {
       );
     }
     return FutureBuilder(
-      future: loginAPI.getStudent(studentId),
+      future: loginAPI.getStudent(studentId!),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         HashPassword hashPassword = HashPassword();
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoginShimmerLoading();
-        } else if (snapshot.hasData) {
-          print("Data Decoded");
+        }
+        if (snapshot.hasData) {
+          Provider.of<StudentData>(context, listen: false)
+              .updateStudentData(snapshot.data);
           if (hashPassword.hashPassword(password) ==
-              LoginAPI.personalInfo?.password) {
+              Provider.of<StudentData>(context, listen: false).personalInfo?.password) {
             widget.textEditingController.clear();
             widget.passwordTextFieldController.clear();
             isSuccess = true;
           }
           FirebaseFunctions.saveToFirestore(
             location: kCurrentLocation!,
-            registrationId: LoginAPI.studentDetails!.studentId as int,
+            registrationId:  Provider.of<StudentData>(context, listen: false).studentDetails!.studentId,
           );
           password = '';
           return isSuccess

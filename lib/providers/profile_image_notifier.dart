@@ -1,36 +1,33 @@
-import 'dart:convert';
+
+import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ProfileImageNotifier extends ChangeNotifier
 {
-  var imageFile;
+  File? imageFile;
 
-  void setImage(String image) async
+  void setImage(Uint8List image) async
   {
     File file = File('${(await getApplicationDocumentsDirectory()).path}/profile.png');
-    file.writeAsBytesSync(base64Decode(image));
+    file.writeAsBytesSync(image);
     imageFile = file;
     notifyListeners();
   }
 
   Future<void> loadImage() async
   {
-    print('Notifier Called');
     final selectedImage = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
-    print(selectedImage?.path);
     if(selectedImage == null) {
-      print("Image Null");
       return;
     }
     imageFile = File(selectedImage.path);
-    print("File Uploaded");
     notifyListeners();
   }
 }

@@ -1,10 +1,14 @@
+
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:braucoe/screens/login/handler.dart';
 import 'package:braucoe/screens/login/logo_screen.dart';
 import 'package:braucoe/screens/profie/profile_page.dart';
 import 'package:braucoe/widgets/profile_image_generator.dart';
-import '../data/apis/login_api.dart';
+import '../providers/student_data_provider.dart';
 import '../screens/help/help.dart';
 import '../screens/login/student_login.dart';
 
@@ -53,7 +57,7 @@ class HomePageDrawer extends StatelessWidget {
                   height: height * 0.02,
                 ),
                 Text(
-                  "${LoginAPI.studentDetails?.student_name}",
+                  "${Provider.of<StudentData>(context, listen: false).studentDetails?.student_name}",
                   style: const TextStyle(
                       fontSize: 20,
                       fontFamily: "LibreFranklin-SemiBold",
@@ -62,7 +66,7 @@ class HomePageDrawer extends StatelessWidget {
                   maxLines: 2,
                 ),
                 Text(
-                  "${LoginAPI.studentDetails?.studentId}",
+                  "${Provider.of<StudentData>(context, listen: false).studentDetails?.studentId}",
                   style: const TextStyle(
                       fontFamily: "LibreFranklin-Medium",
                       fontSize: 20,

@@ -1,5 +1,8 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:braucoe/widgets/drop_down_validator.dart';
 import 'package:braucoe/utilities/semester.dart';
 
@@ -65,12 +68,9 @@ class _SemSelectionDropDownState extends State<SemSelectionDropDown> {
             value: year.isEmpty ? null : year,
             onChanged: (value) {
               if (value == null) {
-                print("Null Value");
                 return;
               }
               selectedYear = value;
-              print(firbaseStoragePath);
-              print(selectedYear);
             },
             items: [
               ...SemesterSyllabus()

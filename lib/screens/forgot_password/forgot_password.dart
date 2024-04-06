@@ -1,6 +1,11 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
+import 'package:braucoe/data/apis/login_api.dart';
 import 'package:braucoe/screens/forgot_password/otp_page.dart';
+import 'package:provider/provider.dart';
+import '../../providers/student_data_provider.dart';
 import '../login/normal_textfield.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -113,24 +118,17 @@ class _ForgotPassword extends State<ForgotPassword> {
                               ),
                               backgroundColor: const Color(0XFF00512D),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               print(widget.textEditingController.text);
                               print(widget.textEditingController.text.length);
                               if (widget.textEditingController.text.isEmpty || widget.textEditingController.text.length != 10) {
-                                print('WRONG');
                                 setState(() {
                                   isDataEmpty = true;
                                 });
                               } else {
-                                print('ENTERED');
+                                Provider.of<StudentData>(context, listen: false)
+                                    .updateStudentData((await LoginAPI().getStudent(int.parse(widget.textEditingController.text))));
                                 Navigator.pushNamed(context, OtpPage.routeName, arguments: int.parse(widget.textEditingController.text),);
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => OtpPage(
-                                //               reg_no:
-                                //                   int.parse(widget.textEditingController.text),
-                                //             )));
                               }
                             },
                             child: const Text(

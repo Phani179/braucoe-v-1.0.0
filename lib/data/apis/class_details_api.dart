@@ -1,31 +1,24 @@
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'package:braucoe/data/models/student_card.dart';
 
-void main() async {
-  ClassDetailsAPI classDetailsAPI = ClassDetailsAPI();
-  await classDetailsAPI.getAllStudents();
-  // Future.delayed(const Duration(seconds: 5), () {});
-}
-
 class ClassDetailsAPI {
-  List<StudentCard> allStudentsList = [];
-
   Future<List<StudentCard>> getAllStudents() async {
-    final uri =
-        Uri.parse('http://braucoeapi-production.up.railway.app/getAllStudents');
-    final response = await http.get(uri);
-    final students = jsonDecode(response.body);
-    for (final student in students) {
+    List<StudentCard> allStudentsList = [];
+    SupabaseClient supabaseClient = Supabase.instance.client;
+    final studentsData = await supabaseClient
+        .from('student_details')
+        .select('''*, student_qualifications(*)''');
+    for (final student in studentsData) {
       StudentCard studentCard = StudentCard(
-          studentRegNo: student['studentRegNo'],
-          studentName: student['studentName'],
-          phoneNo: student['mobileNo'],
-          admissionNo: student['admissionNo']);
+        studentRegNo: student['student_registration_no'] as int,
+        studentName: student['student_name'] as String,
+        phoneNo: student['mobile_no'] as int,
+        admissionNo: student['student_qualifications']['admission_no'] as int,
+      );
       allStudentsList.add(studentCard);
     }
-    print(allStudentsList);
     return allStudentsList;
   }
 }

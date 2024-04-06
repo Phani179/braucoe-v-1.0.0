@@ -1,12 +1,13 @@
+
 class ResultInfo
 {
   String _papName = "NA";
   String _papGR = "NA";
-  double _papGRP = 0.0;
+  int _papGRP = 0;
 
   String get getPapName => _papName;
   String get getPapGR => _papGR;
-  double get getPapGRP => _papGRP;
+  int get getPapGRP => _papGRP;
 
 
   set setPapName(String papName)
@@ -17,7 +18,7 @@ class ResultInfo
   {
     _papGR = papGR;
   }
-  set setPapGRP(double papGRP)
+  set setPapGRP(int papGRP)
   {
     _papGRP = papGRP;
   }

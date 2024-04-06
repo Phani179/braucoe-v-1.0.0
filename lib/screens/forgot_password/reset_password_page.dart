@@ -1,10 +1,14 @@
+
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 
 import 'package:braucoe/data/apis/renew_password_api.dart';
 import 'package:braucoe/screens/login/password_textfield.dart';
 import 'package:braucoe/screens/login/student_login.dart';
 import 'package:braucoe/utilities/images.dart';
 import 'package:braucoe/widgets/shimmer_effect/mail_and_reset_pwd_shimmer_loading.dart';
+import '../../providers/student_data_provider.dart';
 import '../login/normal_textfield.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -167,7 +171,7 @@ class _ResetPassword extends State<ResetPassword> {
                                   builder: (BuildContext context) {
                                     return FutureBuilder(
                                       future: renewPassword.renewPassword(
-                                          widget.passwordEditingController.text),
+                                          Provider.of<StudentData>(context, listen: false).studentDetails!.studentId, widget.passwordEditingController.text),
                                       builder: (BuildContext context,
                                           AsyncSnapshot<dynamic> snapshot) {
                                         if (snapshot.connectionState ==

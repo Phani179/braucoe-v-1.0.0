@@ -1,9 +1,11 @@
+
 import 'package:flutter/material.dart';
 
-import 'package:braucoe/widgets/shimmer_effect/mail_and_reset_pwd_shimmer_loading.dart';
+import 'package:provider/provider.dart';
 
-import '../../data/apis/login_api.dart';
+import 'package:braucoe/widgets/shimmer_effect/mail_and_reset_pwd_shimmer_loading.dart';
 import '../../data/apis/mail_api.dart';
+import '../../providers/student_data_provider.dart';
 
 class MailSendingPage extends StatelessWidget {
   MailSendingPage(this.subject, this.message, {super.key});
@@ -16,7 +18,7 @@ class MailSendingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: mailAPI.sendMail(
-          LoginAPI.studentDetails?.studentId, subject, message),
+         studentId:  Provider.of<StudentData>(context, listen: false).studentDetails?.studentId ?? 00000000, subject: subject, body: message, recieverMail: 'Phanireddi7989@gmail.com'),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MailandResetPwdShimmerLoading();

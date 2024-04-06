@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:braucoe/screens/results/result_table.dart';
 import 'package:braucoe/widgets/shimmer_effect/result_page_loding.dart';
 import '../../data/apis/result_api.dart';
@@ -30,12 +32,10 @@ class _ResultPageHandler extends State<ResultPageHandler> {
 
   @override
   Widget build(BuildContext context) {
-    print('ID : ${widget.reg_no}');
     return Material(
       child: FutureBuilder(
-        future: resultsAPI.getResult(widget.semester, widget.reg_no),
+        future: resultsAPI.getResult(widget.semester!, widget.reg_no!),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          print(years[widget.semester]!);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const ResultPageLoading();
           }

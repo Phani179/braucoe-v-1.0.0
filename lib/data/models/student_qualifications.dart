@@ -45,11 +45,11 @@ class StudentQualifications
   factory StudentQualifications.fromMap(Map<String, dynamic> json)
   {
     return StudentQualifications(
-        json["admissionNo"],
-        json["sscHallTicketNo"],
-        json["interHallTicketNo"],
-        json["eamcetHallTicketNo"],
-        json["eamcetRank"],
+        json["admission_no"],
+        json["ssc_hallticket_no"],
+        json["intermediate_hallticket_no"],
+        json["eamcet_hallticket_no"],
+        json["eamcet_rank"],
     );
   }
 }

@@ -1,9 +1,10 @@
+
 class StudentCard {
   int? studentRegNo;
 
   String? studentName;
 
-  String? phoneNo;
+  int? phoneNo;
 
   int? admissionNo;
 
@@ -23,7 +24,7 @@ class StudentCard {
     this.studentRegNo = studentRegNo;
   }
 
-  set setPhoneNo(String phoneNo) {
+  set setPhoneNo(int phoneNo) {
     this.phoneNo = phoneNo;
   }
 
@@ -40,10 +41,10 @@ class StudentCard {
 
   factory StudentCard.fromJson(Map<String, Object> data) {
     return StudentCard(
-      studentRegNo: data['studentRegNo'] as int,
-      studentName: data['studentName'] as String,
-      phoneNo: data['mobileNo'] as String,
-      admissionNo: data['admissionNo'] as int,
+      studentRegNo: data['student_registration_no'] as int,
+      studentName: data['student_name'] as String,
+      phoneNo: data['mobile_no'] as int,
+      admissionNo: data['admission_no'] as int,
     );
   }
 }

@@ -1,8 +1,9 @@
 
-import 'package:braucoe/utilities/encrypt_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+
+import 'package:braucoe/utilities/encrypt_data.dart';
 
 class FirebaseFunctions
 {

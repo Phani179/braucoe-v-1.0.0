@@ -1,11 +1,13 @@
-import 'package:braucoe/screens/class_details/chat_room.dart';
+
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:braucoe/screens/class_details/chat_room.dart';
 import 'package:braucoe/data/models/student_card.dart';
 import 'package:braucoe/data/apis/class_details_api.dart';
 import 'package:braucoe/widgets/shimmer_effect/class_details_shimmer_loading.dart';
 import 'package:braucoe/utilities/images.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ClassDetailsScreen extends StatefulWidget {
   static const String routeName = '/class-details';
@@ -49,7 +51,7 @@ class _ClassDetailsScreenState extends State<ClassDetailsScreen> {
         child: Column(
           children: [
             Expanded(
-              child: FutureBuilder(
+              child: FutureBuilder<List<StudentCard>>(
                 future: studentCards,
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -57,7 +59,7 @@ class _ClassDetailsScreenState extends State<ClassDetailsScreen> {
                     return const ClassDetailsShimmerLoading();
                   }
                   if (snapshot.hasData) {
-                    int length = classDetailsAPI.allStudentsList.length;
+                    int length = snapshot.data.length;
                     return ListView.builder(
                       itemCount: length,
                       itemBuilder: (ctx, index) {
@@ -200,6 +202,7 @@ class _ClassDetailsScreenState extends State<ClassDetailsScreen> {
                       },
                     );
                   } else {
+                    print(snapshot.data);
                     return const AlertDialog(
                       title: Text('Check once again'),
                     );

@@ -1,21 +1,20 @@
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:braucoe/providers/chat_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-import 'package:braucoe/utilities/file_handling.dart';
 import 'package:flutter/foundation.dart' as foundation;
-
-import 'package:braucoe/data/apis/login_api.dart';
-import 'package:braucoe/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:braucoe/utilities/images.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'package:braucoe/providers/chat_provider.dart';
+import 'package:braucoe/utilities/file_handling.dart';
+import 'package:braucoe/data/models/message.dart';
+import 'package:braucoe/utilities/images.dart';
+import '../../providers/student_data_provider.dart';
 import '../../utilities/encrypt_data.dart';
 
 FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -41,7 +40,7 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    students = [LoginAPI.studentDetails?.studentId, int.parse(widget.regNo)];
+    students = [Provider.of<StudentData>(context, listen: false).studentDetails!.studentId, int.parse(widget.regNo)];
     _textEditingController = TextEditingController();
   }
 
@@ -49,16 +48,14 @@ class _ChatRoomState extends State<ChatRoom> {
   {
     final storageRef = FirebaseStorage.instance.ref('chat_files');
     final fileRef = storageRef.child('${getFileName(file.path)}.${getFileExtension(file)}');
-    print('FILE REF : ${fileRef.fullPath}');
     UploadTask task = fileRef.putFile(file,);
-    return await task.snapshot.ref.fullPath;
+    return (await task.snapshot.ref.fullPath);
   }
 
   void _saveMessage(Message message, File? file) async {
     if(file != null)
       {
         String path = await _saveFile(file);
-        print('NAME : '+FirebaseStorage.instance.ref(path).name);
         message.message = EncryptData.encryptAES(path);
       }
     CollectionReference collectionReference = firebaseFirestore
@@ -105,7 +102,7 @@ class _ChatRoomState extends State<ChatRoom> {
       timestamp: DateTime.now(),
       type: text == null ? 'file' : 'text',
       senderId:
-          EncryptData.encryptAES(LoginAPI.studentDetails!.studentId.toString()),
+          EncryptData.encryptAES(Provider.of<StudentData>(context, listen: false).studentDetails!.studentId.toString()),
       receiverId: EncryptData.encryptAES(int.parse(widget.regNo).toString()),
     );
     _textEditingController.clear();
@@ -151,7 +148,6 @@ class _ChatRoomState extends State<ChatRoom> {
   void _pickFile() async {
     List<File>? files = await FileHandling.pickFile();
     pickedFiles = [...?pickedFiles, if(files != null) ...files];
-    print('file path :${pickedFiles![0].path}');
     setState(() {});
   }
 
@@ -310,12 +306,11 @@ class _ChatRoomState extends State<ChatRoom> {
                           'text';
                       final message = EncryptData.decryptAES(
                               snapshot.data?[length - index]['message']);
-                      print(message);
                       int senderId = int.parse(EncryptData.decryptAES(
                           snapshot.data?[length - index]['senderId']));
                       return Align(
                         alignment:
-                            senderId == LoginAPI.studentDetails?.studentId
+                            senderId == Provider.of<StudentData>(context, listen: false).studentDetails?.studentId
                                 ? Alignment.centerRight
                                 : Alignment.centerLeft,
                         child: Container(
@@ -323,7 +318,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color:
-                                senderId == LoginAPI.studentDetails?.studentId
+                                senderId == Provider.of<StudentData>(context, listen: false).studentDetails?.studentId
                                     ? const Color(0xFFA5DEC5)
                                     : Colors.white,
                           ),
@@ -348,7 +343,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                       )
                                     : SizedBox(
                                   width: senderId ==
-                                      LoginAPI
+                                      Provider.of<StudentData>(context, listen: false)
                                           .studentDetails?.studentId ? 100 : 160,
                                         child: Row(
                                           children: [
@@ -362,17 +357,15 @@ class _ChatRoomState extends State<ChatRoom> {
                                               ),
                                             ),
                                             if (!(senderId ==
-                                                LoginAPI
+                                                Provider.of<StudentData>(context, listen: false)
                                                     .studentDetails?.studentId))
                                               InkWell(
                                                 onTap: () {
                                                   FileHandling.saveFileFromChat(message);
                                                 },
-                                                 child : Container(
-                                                   child: const Icon(
-                                                    Icons.file_download_sharp,
-                                                                                                   ),
-                                                 ),
+                                                 child : const Icon(
+                                                  Icons.file_download_sharp,
+                                                                                                 ),
                                               )
                                           ],
                                         ),

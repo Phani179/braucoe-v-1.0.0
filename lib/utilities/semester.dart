@@ -1,3 +1,4 @@
+
 class SemesterSyllabus
 {
   List<Map<String, Object>> semester_1 = [

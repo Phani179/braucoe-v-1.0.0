@@ -1,3 +1,4 @@
+
 class FeeDetails {
   late int year1FeePaid;
   late int year2FeePaid;
@@ -37,10 +38,10 @@ class FeeDetails {
 
   factory FeeDetails.fromJson(Map<String, dynamic> fromJson) {
     return FeeDetails(
-      year1FeePaid: fromJson['year1']! as int,
-      year2FeePaid: fromJson['year2']! as int,
-      year3FeePaid: fromJson['year3']! as int,
-      year4FeePaid: fromJson['year4']! as int,
+      year1FeePaid: fromJson['year_1']! as int,
+      year2FeePaid: fromJson['year_2']! as int,
+      year3FeePaid: fromJson['year_3']! as int,
+      year4FeePaid: fromJson['year_4']! as int,
     );
   }
 }

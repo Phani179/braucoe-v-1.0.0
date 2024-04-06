@@ -1,12 +1,10 @@
+
 import 'package:braucoe/providers/profile_image_notifier.dart';
 
 import '../data/apis/image_api.dart';
 
-void uploadImage(ProfileImageNotifier profileImageNotifier) async {
-  print("Image Upload : 1");
+void uploadImage(int studentId, ProfileImageNotifier profileImageNotifier) async {
   await profileImageNotifier.loadImage();
-  print("Image Upload : 4");
   ImageAPI imageAPI = ImageAPI();
-  imageAPI.uploadAPI(profileImageNotifier.imageFile);
-  print("Successfully Uploaded");
+  imageAPI.uploadImage(studentId, profileImageNotifier.imageFile);
 }

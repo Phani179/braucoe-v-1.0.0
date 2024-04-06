@@ -1,5 +1,4 @@
-import 'package:braucoe/providers/chat_provider.dart';
-import 'package:braucoe/screens/login/logo_screen.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:device_preview/device_preview.dart';
@@ -7,12 +6,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 
+import 'package:braucoe/providers/chat_provider.dart';
+import 'package:braucoe/providers/student_data_provider.dart';
 import 'package:braucoe/providers/ai_chat_provider.dart';
 import 'package:braucoe/utilities/env.dart';
 import 'package:braucoe/firebase_options.dart';
 import 'package:braucoe/screens/login/handler.dart';
 import 'package:braucoe/services/route_generator.dart';
 import 'package:braucoe/providers/profile_image_notifier.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 void main() async {
   RouteGenerator routeGenerator = RouteGenerator();
@@ -20,6 +23,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Supabase.initialize(
+    url: Env.supabaseURL,
+    anonKey: Env.supabaseKey,
+  );
+
   Gemini.init(apiKey: Env.geminiAPIKey);
   runApp(
     DevicePreview(
@@ -29,6 +38,7 @@ void main() async {
           ChangeNotifierProvider(create: (ctx) => ProfileImageNotifier()),
           ChangeNotifierProvider(create: (ctx) => AIChatProvider()),
           ChangeNotifierProvider(create: (ctx) => ChatProvider()),
+          ChangeNotifierProvider(create: (ctx) => StudentData()),
         ],
         child: MaterialApp(
           theme: ThemeData().copyWith(

@@ -1,11 +1,12 @@
+
 class StudentDetails
 {
-  var _studentId;
+  late int _studentId;
   late String _studentName;
   late String _fatherName;
   late String _gender;
   late String _branch;
-  late String _mobileNo;
+  late int _mobileNo;
   late String _emailId;
   late String _dateOfWillingness;
 
@@ -19,11 +20,11 @@ class StudentDetails
 
   String get dateOfWillingness => _dateOfWillingness;
 
-  get studentId => _studentId;
+  int get studentId => _studentId;
 
   String get student_name => _studentName;
 
-  String get mobile_no => _mobileNo;
+  int get mobile_no => _mobileNo;
 
   String get emailId => _emailId;
 
@@ -39,7 +40,7 @@ class StudentDetails
     _gender = value;
   }
 
-  set mobile_no(String value) {
+  set mobile_no(int value) {
     _mobileNo = value;
   }
 
@@ -51,7 +52,7 @@ class StudentDetails
     _studentName = value;
   }
 
-  set studentId(value) {
+  set studentId(int value) {
     _studentId = value;
   }
 
@@ -73,14 +74,14 @@ class StudentDetails
   factory StudentDetails.fromMap(Map<String, dynamic> json)
   {
     return StudentDetails.parameterizedConstructor(
-        json["studentRegNo"],
+        json["student_registration_no"],
         json["student_name"],
         json["branch"],
         json["father_name"],
         json["mobile_no"],
         json["email_id"],
         json["gender"],
-      json["dateOfWillingness"]
+      json["date_of_willingness"]
         );
   }
 }

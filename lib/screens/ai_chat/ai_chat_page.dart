@@ -1,14 +1,14 @@
-import 'package:braucoe/providers/ai_chat_provider.dart';
-import 'package:braucoe/utilities/images.dart';
-import 'package:braucoe/widgets/profile_image_generator.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
+
+import 'package:braucoe/providers/ai_chat_provider.dart';
+import 'package:braucoe/utilities/images.dart';
 
 class AIChatPage extends StatefulWidget {
   const AIChatPage({super.key});
@@ -92,12 +92,14 @@ class _AIChatPageState extends State<AIChatPage> {
                             ),
                             CircleAvatar(
                               radius: 15,
-                              child: chatProvider.chat[length - index].role ==
-                                      'user'
-                                  ? ProfileImageGenerator(
-                                      radius: 16,
-                                    )
-                                  : SvgPicture.asset(Images.gemini),
+                              child:
+                              // chatProvider.chat[length - index].role ==
+                              //         'user'
+                              //     ? ProfileImageGenerator(
+                              //         radius: 16,
+                              //       )
+                              //     :
+                              SvgPicture.asset(Images.gemini),
                             ),
                           ],
                         ),

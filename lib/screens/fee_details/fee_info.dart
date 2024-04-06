@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class FeeInfoScreen extends StatelessWidget {
@@ -17,10 +18,13 @@ class FeeInfoScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ),
+                ),
                 Image.asset('assets/images/fee_details.png'),
               ],
             ),
@@ -142,11 +146,15 @@ class FeeInfoScreen extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                for (int i = 0; i < 6; i++) const Text(':', style: TextStyle(
-                                    fontSize: 14.5,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF382E1E),
-                                    fontFamily: 'LibreFranklin-Regular'),)
+                                for (int i = 0; i < 6; i++)
+                                  const Text(
+                                    ':',
+                                    style: TextStyle(
+                                        fontSize: 14.5,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF382E1E),
+                                        fontFamily: 'LibreFranklin-Regular'),
+                                  )
                               ],
                             ),
                             Column(
@@ -155,40 +163,60 @@ class FeeInfoScreen extends StatelessWidget {
                                   i == 5
                                       ? const Text(
                                           'Rs.',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Color(0xFF382E1E),
-                                        fontFamily: 'LibreFranklin-Regular'),
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xFF382E1E),
+                                              fontFamily:
+                                                  'LibreFranklin-Regular'),
                                         )
-                                      : const Text('Rs.', style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFF382E1E),
-                                      fontFamily: 'LibreFranklin-Regular'),)
+                                      : const Text(
+                                          'Rs.',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xFF382E1E),
+                                              fontFamily:
+                                                  'LibreFranklin-Regular'),
+                                        )
                               ],
                             ),
                             const Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('35,000/-', style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF382E1E),
-                                    fontFamily: 'LibreFranklin-Regular'),),
-                                Text('3,500/-', style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF382E1E),
-                                    fontFamily: 'LibreFranklin-Regular'),),
-                                Text('35,000/-', style: TextStyle(
-                                    color: Color(0xFF382E1E),
-                                    fontSize: 15,
-                                    fontFamily: 'LibreFranklin-Regular'),),
-                                Text('35,000/-', style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF382E1E),
-                                    fontFamily: 'LibreFranklin-Regular'),),
-                                Text('35,000/-', style: TextStyle(
-                                  fontSize: 15,
-                                    color: Color(0xFF382E1E),
-                                    fontFamily: 'LibreFranklin-Regular'),),
+                                Text(
+                                  '35,000/-',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color(0xFF382E1E),
+                                      fontFamily: 'LibreFranklin-Regular'),
+                                ),
+                                Text(
+                                  '3,500/-',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color(0xFF382E1E),
+                                      fontFamily: 'LibreFranklin-Regular'),
+                                ),
+                                Text(
+                                  '35,000/-',
+                                  style: TextStyle(
+                                      color: Color(0xFF382E1E),
+                                      fontSize: 15,
+                                      fontFamily: 'LibreFranklin-Regular'),
+                                ),
+                                Text(
+                                  '35,000/-',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color(0xFF382E1E),
+                                      fontFamily: 'LibreFranklin-Regular'),
+                                ),
+                                Text(
+                                  '35,000/-',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color(0xFF382E1E),
+                                      fontFamily: 'LibreFranklin-Regular'),
+                                ),
                                 Text(
                                   '1,43,500/-',
                                   style: TextStyle(

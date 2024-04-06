@@ -1,16 +1,14 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
 
 import 'package:braucoe/screens/ai_chat/ai_chat_page.dart';
 import 'package:braucoe/utilities/custom_icons.dart';
 import 'package:braucoe/screens/home_page/home_page.dart';
 import 'package:braucoe/screens/map/map_page.dart';
-import 'package:provider/provider.dart';
-
 import 'package:braucoe/providers/ai_chat_provider.dart';
 import 'package:braucoe/providers/profile_image_notifier.dart';
 
@@ -69,7 +67,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: GNav(
           selectedIndex: _selectedIndex,
           onTabChange: (index) {
-            print('INDEX $index');
             setState(() {
               _selectedIndex = index;
             });

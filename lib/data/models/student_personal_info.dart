@@ -6,7 +6,6 @@ class StudentPersonalInfo
   late String _feeReimbursementStatus;
   late String _isPhysicalHandicap;
   late String _permanentAddress;
-  late dynamic _passportSizePhoto;
   late String? _password;
 
   StudentPersonalInfo();
@@ -24,16 +23,10 @@ class StudentPersonalInfo
 
   String get category => _category;
 
-  dynamic get passportSizePhoto => _passportSizePhoto;
-
   String get feeReimbursementStatus => _feeReimbursementStatus;
 
   set feeReimbursementStatus(String value) {
     _feeReimbursementStatus = value;
-  }
-
-  set passportSizePhoto(dynamic value) {
-    _passportSizePhoto = value;
   }
 
   set category(String value) {
@@ -58,19 +51,17 @@ class StudentPersonalInfo
       this._feeReimbursementStatus,
       this._isPhysicalHandicap,
       this._permanentAddress,
-      this._passportSizePhoto,
       this._password
       );
 
   factory StudentPersonalInfo.fromMap(Map<String, dynamic> json)
   {
     return StudentPersonalInfo.properties(
-        json["dateOfBirth"],
+        json["date_of_birth"],
         json["category"],
-        json["feeReimbursementStatus"],
-        json["isPhysicalHandicap"],
-        json["permanentAddress"],
-        json["passportSizePhoto"],
+        json["fee_reimbursement_status"],
+        json["is_physical_handicap"],
+        json["permanent_address"],
         json["password"]
     );
   }

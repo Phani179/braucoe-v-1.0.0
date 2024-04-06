@@ -1,10 +1,13 @@
+
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:braucoe/data/apis/fee_details_api.dart';
+
+import 'package:braucoe/providers/student_data_provider.dart';
 import 'package:braucoe/screens/fee_details/fee_info.dart';
 import 'package:braucoe/screens/login/student_login.dart';
 import 'package:braucoe/widgets/fees_bar.dart';
-import 'package:braucoe/widgets/shimmer_effect/fee_page_shimmer.dart';
 
 class FeeDetailsScreen extends StatefulWidget {
 
@@ -25,28 +28,14 @@ class _FeeDetailsScreenState extends State<FeeDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FeeDetailsAPI feeDetailsAPI = FeeDetailsAPI();
-    print(prefs?.getInt(StudentLogin.studentId));
+    dueAmount = 140000 -
+        Provider.of<StudentData>(context, listen: false).feeDetails!.getYear1FeePaid -
+        Provider.of<StudentData>(context, listen: false).feeDetails!.getYear2FeePaid -
+        Provider.of<StudentData>(context, listen: false).feeDetails!.getYear3FeePaid -
+        Provider.of<StudentData>(context, listen: false).feeDetails!.getYear4FeePaid;
     print(prefs?.getInt(StudentLogin.isLoggedIn));
     return Scaffold(
-      body: FutureBuilder(
-        future: initializeSharedPref(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return FutureBuilder(
-              future: feeDetailsAPI
-                  .getFeeDetails(prefs?.getInt(StudentLogin.studentId)),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: FeePageShimmerLoading(),
-                  );
-                } else if (snapshot.hasData) {
-                  dueAmount = 140000 -
-                      feeDetailsAPI.feeDetails.year1FeePaid -
-                      feeDetailsAPI.feeDetails.year2FeePaid -
-                      feeDetailsAPI.feeDetails.year3FeePaid -
-                      feeDetailsAPI.feeDetails.year4FeePaid;
-                  return SafeArea(
+      body: SafeArea(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -123,25 +112,25 @@ class _FeeDetailsScreenState extends State<FeeDetailsScreen> {
                                 Center(
                                   child: FeeBarItem(
                                       feePaid:
-                                          feeDetailsAPI.feeDetails.year1FeePaid,
+                                      Provider.of<StudentData>(context, listen: false).feeDetails!.getYear1FeePaid,
                                       year: '1st year'),
                                 ),
                                 Center(
                                   child: FeeBarItem(
                                       feePaid:
-                                          feeDetailsAPI.feeDetails.year2FeePaid,
+                                      Provider.of<StudentData>(context, listen: false).feeDetails!.getYear2FeePaid,
                                       year: '2nd year'),
                                 ),
                                 Center(
                                   child: FeeBarItem(
                                       feePaid:
-                                          feeDetailsAPI.feeDetails.year3FeePaid,
+                                      Provider.of<StudentData>(context, listen: false).feeDetails!.getYear3FeePaid,
                                       year: '3rd year'),
                                 ),
                                 Center(
                                   child: FeeBarItem(
                                       feePaid:
-                                          feeDetailsAPI.feeDetails.year4FeePaid,
+                                      Provider.of<StudentData>(context, listen: false).feeDetails!.getYear4FeePaid,
                                       year: '4th year'),
                                 ),
                                 const Spacer(),
@@ -163,22 +152,7 @@ class _FeeDetailsScreenState extends State<FeeDetailsScreen> {
                         ),
                       ],
                     ),
-                  );
-                } else {
-                  return AlertDialog(
-                    title: const Text('Check your internet connection'),
-                    actions: [
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Ok')),
-                    ],
-                  );
-                }
-              });
-        },
-      ),
+                  ),
     );
   }
 }

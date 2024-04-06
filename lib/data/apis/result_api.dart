@@ -1,21 +1,10 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:braucoe/data/models/result_info.dart';
 
-void main()
-{
-  ResultAPI resultAPI = ResultAPI();
-  resultAPI.getResult("Semester - 1", 2081951044);
-  Future.delayed(const Duration(milliseconds: 3000),()
-  {
-    print("Data Fetched for User");
-    resultAPI.getResult("Semester - 1", 2081951044);
-  });
-}
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:braucoe/data/models/result_info.dart';
 
 class ResultAPI
 {
-  late ResultInfo resultInfo;
   static List result =[];
   static double SGPA = 0;
   static List studentResultDetails = [];
@@ -29,63 +18,21 @@ class ResultAPI
     "semester_7" : 4,
     "semester_8" : 3,
   };
-  Future getResult(var semester,var reg_no) async
+  Future getResult(String semester,int reg_no) async
   {
-    // if(semesterDetails[semester] != null)
-    //   {
-    //     print("Same User");
-    //     result = [];
-    //     result = semesterDetails[semester]?[1];
-    //     return;
-    //   }
     result.clear();
-    print("First User");
-    print(DateTime.now());
-    final url = "https://braucoeapi-production.up.railway.app/result/${semester}/${reg_no}";
-    final uri = Uri.parse(url);
-    print("URL Parsed");
-    final response = await http.get(uri);
-    print(response);
-    print("Request Sent");
-    var body = jsonDecode(response.body);
-    if(body == null)
-    {
-      return "";
-    }
-    SGPA = body["sgpa"];
-    // Student Result
+    SupabaseClient supabaseClient = Supabase.instance.client;
+    final studentResults = (await supabaseClient.from('$semester').select().eq('student_registration_no', reg_no))[0];
+    SGPA = studentResults['sgpa'];
     int? noOfSubjects = semesterDetails[semester];
     for(var i = 1; i <= noOfSubjects!; i++)
     {
-      resultInfo = ResultInfo();
-      resultInfo.setPapName = body["pap${i}n"];
-      resultInfo.setPapGR = body["pap${i}gr"];
-      resultInfo.setPapGRP = body["pap${i}grp"];
+      ResultInfo resultInfo = ResultInfo();
+      resultInfo.setPapName = studentResults["pap${i}n"] as String;
+      resultInfo.setPapGR = studentResults["pap${i}gr"] as String;
+      resultInfo.setPapGRP = studentResults["pap${i}grp"] as int;
       result.add(resultInfo);
     }
-    print("Results Fetched");
-    return body;
-    // print(body);
-    // if(body == null)
-    //   {
-    //     return "";
-    //   }
-    // SGPA = body["sgpa"];
-    // // Student Result
-    // int? noOfSubjects = semesterDetails[semester];
-    // for(var i = 1; i <= noOfSubjects!; i++)
-    // {
-    //   resultInfo = ResultInfo();
-    //   resultInfo.setPapName = body["pap${i}n"];
-    //   resultInfo.setPapGR = body["pap${i}gr"];
-    //   resultInfo.setPapGRP = body["pap${i}grp"];
-    //   result.add(resultInfo);
-    // }
-    // print("Results Fetched");
-    // print(result);
-    //
-    // return result;
-    // print("Body Parsed");
-
+    return studentResults;
   }
 }

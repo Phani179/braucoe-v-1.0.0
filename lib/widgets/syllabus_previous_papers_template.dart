@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
-import 'package:braucoe/widgets/sem_selection_dropdown.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:braucoe/widgets/sem_selection_dropdown.dart';
 
 class SyllabusPreviousPapersTemplate extends StatelessWidget {
   const SyllabusPreviousPapersTemplate({required this.image, required this.title,required this.subTitle, required this.buttonText, super.key});

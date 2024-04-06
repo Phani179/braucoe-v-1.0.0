@@ -1,15 +1,16 @@
 
-import 'package:braucoe/data/apis/login_api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gemini/flutter_gemini.dart';
+
+import 'package:braucoe/screens/login/handler.dart';
 
 class AIChatProvider extends ChangeNotifier
 {
   List<Content> chat = [
     Content(
       parts: [
-        Parts(text: 'Hi, I am ${LoginAPI.studentDetails!.student_name}'),
+        Parts(text: 'Hi, I am ${Handler.studentName}'),
       ],
       role: 'user',
     ),
@@ -20,7 +21,7 @@ class AIChatProvider extends ChangeNotifier
     chat = [
       Content(
         parts: [
-          Parts(text: 'Hi, I am ${LoginAPI.studentDetails!.student_name}'),
+          Parts(text: 'Hi, I am ${Handler.studentName}'),
         ],
         role: 'user',
       ),

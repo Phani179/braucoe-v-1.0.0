@@ -1,13 +1,16 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:file_saver/file_saver.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import 'package:braucoe/data/apis/login_api.dart';
 import 'package:braucoe/data/apis/result_api.dart';
+import '../../providers/student_data_provider.dart';
 
 class ResultTable extends StatefulWidget {
 
@@ -43,17 +46,15 @@ class _ResultTable extends State<ResultTable> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
               Screenshot(
                 controller: screenshotController,
                   child: Column(
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            width: 70,
-                          ),
                           Text("${widget.year} Results",
                             style: const TextStyle(fontFamily: "LibreFranklin-SemiBold", fontSize: 28),
                           ),
@@ -94,7 +95,7 @@ class _ResultTable extends State<ResultTable> {
                                   TableCell(
                                       child: Padding(
                                         padding: const EdgeInsets.all(7.0),
-                                        child: Text("${LoginAPI.studentDetails?.studentId}", style: const TextStyle(fontFamily: "LibreFranklin-Regular", fontWeight: FontWeight.w400, fontSize: 15),),
+                                        child: Text("${Provider.of<StudentData>(context, listen: false).studentDetails?.studentId}", style: const TextStyle(fontFamily: "LibreFranklin-Regular", fontWeight: FontWeight.w400, fontSize: 15),),
                                       )
                                   ),
                                 ]
@@ -110,7 +111,7 @@ class _ResultTable extends State<ResultTable> {
                                   TableCell(
                                     child: Padding(
                                       padding: const EdgeInsets.all(7.0),
-                                      child: AutoSizeText(capitalize("${LoginAPI.studentDetails?.student_name}"),
+                                      child: AutoSizeText(capitalize("${Provider.of<StudentData>(context, listen: false).studentDetails?.student_name}"),
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             fontFamily: "LibreFranklin-Regular",
@@ -132,7 +133,7 @@ class _ResultTable extends State<ResultTable> {
                                   TableCell(
                                       child: Padding(
                                         padding: const EdgeInsets.all(7.0),
-                                        child: AutoSizeText("${LoginAPI.studentDetails?.branch}",
+                                        child: AutoSizeText("${Provider.of<StudentData>(context, listen: false).studentDetails?.branch}",
                                             overflow: TextOverflow.ellipsis
                                             ,style: const TextStyle(fontFamily: "LibreFranklin-Regular", fontWeight: FontWeight.w400, fontSize: 15)),
                                       )
@@ -275,7 +276,7 @@ class _ResultTable extends State<ResultTable> {
     String updatedName = "";
     for(int i = 0; i < words.length; i++)
       {
-        updatedName += words[i][0].toUpperCase() + words[i].substring(1).toLowerCase() + " ";
+        updatedName += "${words[i][0].toUpperCase()}${words[i].substring(1).toLowerCase()} ";
       }
     return updatedName;
   }
@@ -284,7 +285,6 @@ class _ResultTable extends State<ResultTable> {
 void savePDF(Uint8List image) async
 {
   pw.Document pdf = pw.Document();
-  print("Document Created");
   pdf.addPage(pw.Page(
     pageFormat: PdfPageFormat.a4,
       build: (context) {
@@ -295,9 +295,7 @@ void savePDF(Uint8List image) async
   )
   );
   var savedPDF = await pdf.save();
-  print(savedPDF);
 
   String? filePath = await FileSaver.instance.saveAs(name: widget.year,bytes: savedPDF, ext: 'pdf', mimeType: MimeType.pdf);
-  print(filePath);
 }
 }
